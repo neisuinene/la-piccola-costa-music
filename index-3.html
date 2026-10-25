@@ -160,7 +160,7 @@ cur=curId?songs.findIndex(s=>s.id===curId):-1;if(cur<0)curId=null;
 if(view==='album'&&alb!==ALL&&!songs.some(s=>albName(s)===alb))view='albums';
 renderTop();renderList();info()}
 function renderTop(){
-if(view==='albums'){$('#top').innerHTML=`<div><h1 class="serif">Costa Music</h1><small>已用 ${USED||'…'}・${bkInfo()}</small></div><div class="tb"><button class="ico" data-menu aria-label="備份與還原">⋯</button><button class="btn" data-add>＋ 新增歌曲</button></div>`}
+if(view==='albums'){$('#top').innerHTML=`<div><h1 class="serif">Costa Music</h1><small>已用 ${USED||'…'}・${bkInfo()}・v4</small></div><div class="tb"><button class="ico" data-menu aria-label="備份與還原">⋯</button><button class="btn" data-add>＋ 新增歌曲</button></div>`}
 else{$('#top').innerHTML=`<div class="tl"><button class="ico" data-home aria-label="返回">‹</button><div><h1 class="serif">${esc(alb===ALL?'全部歌曲':alb)}</h1><small>${listSongs().length} 首</small></div></div><div class="tb"><button class="btn" data-add>＋ 新增歌曲</button></div>`}}
 function renderList(){
 $('#empty').hidden=songs.length>0||view!=='albums';
@@ -329,7 +329,7 @@ $('#vtabs').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if
 $('#lyr').addEventListener('click',e=>{const p=e.target.closest('.ly');if(p){au.currentTime=+p.dataset.t;au.play()}});
 $('#syncbtn').addEventListener('click',()=>{if(songs[cur])openSync()});
 load();
-if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}
+if('serviceWorker' in navigator){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!window.__rl){window.__rl=1;location.reload()}});window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{}))}
 </script>
 </body>
 </html>
