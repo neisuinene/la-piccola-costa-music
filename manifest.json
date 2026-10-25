@@ -1,0 +1,33 @@
+{
+  "id": "/la-piccola-costa-music/",
+  "name": "La Piccola Costa Music",
+  "short_name": "Costa Music",
+  "description": "小海岸音樂盒：播放自己的歌，一邊聽一邊看歌詞",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f8f1e6",
+  "theme_color": "#d9774f",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
