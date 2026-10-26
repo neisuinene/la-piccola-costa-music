@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#d9774f">
+<title>La Piccola Costa Music</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Serif+KR:wght@500&display=swap">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Costa Music">
+<style>
+:root{--bg:#f8f1e6;--card:#fffdf8;--ink:#2a3d52;--mute:#7a8a99;--line:#e6dccb;--ac:#d9774f;--ac2:#4d78a8;--hi:#d9467f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17222c;--card:#1f2e3b;--ink:#e9eff5;--mute:#93a5b5;--line:#2c4052;--ac:#f08f64;--ac2:#7fb0e6;--hi:#f27aa6}}
+:root[data-theme="dark"]{--bg:#17222c;--card:#1f2e3b;--ink:#e9eff5;--mute:#93a5b5;--line:#2c4052;--ac:#f08f64;--ac2:#7fb0e6;--hi:#f27aa6}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
+[hidden]{display:none!important}
+#app{max-width:480px;height:100%;margin:0 auto;position:relative;overflow:hidden;display:flex;flex-direction:column}
+.serif,h1,h2,.ly,.pl,.hd{font-family:"Noto Serif TC","Noto Serif KR",Georgia,serif}
+.top{display:flex;justify-content:space-between;align-items:center;padding:16px 18px 10px}
+.top h1{font-size:22px}.top small{color:var(--mute);font-size:12px}
+.btn{border:0;border-radius:999px;background:var(--ac);color:#fff;padding:10px 16px;font-size:14px}
+.btn.big{width:100%;border-radius:16px;padding:18px;font-size:18px}
+.btn.ghost{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+#list{flex:1;overflow-y:auto;padding:4px 14px 90px}
+.row{display:flex;align-items:center;gap:12px;padding:10px;border-radius:14px;background:var(--card);border:1px solid var(--line);margin-bottom:8px}
+.row.on{border-color:var(--ac)}
+.rt{flex:1;min-width:0}.rt b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}.rt small{color:var(--mute);font-size:12px}
+.cv{width:56px;height:56px;flex:none;border-radius:12px;background:linear-gradient(135deg,#f6b26b,#d9467f 55%,#4d78a8);background-size:cover;background-position:center;display:grid;place-items:center;color:#fff;font-size:22px}
+.cv.sm{width:48px;height:48px;font-size:18px}
+.ico{border:0;background:none;font-size:22px;padding:6px 10px;color:var(--mute)}
+.empty{padding:50px 28px;text-align:center;color:var(--mute);line-height:1.9}
+#mini{position:absolute;left:10px;right:10px;bottom:10px;display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px 10px;box-shadow:0 4px 16px rgba(30,40,60,.18)}
+#mini b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;font-size:14px}
+.pbtn{width:42px;height:42px;border-radius:50%;border:0;background:var(--ac);color:#fff;font-size:16px}
+#play{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;padding:10px 16px 14px;transform:translateY(100%);transition:transform .3s;z-index:5}
+#play.on{transform:none}
+.ph{display:flex;justify-content:space-between;align-items:center}
+.ph button{border:0;background:none;font-size:15px;padding:8px;color:var(--ac2)}
+.pi{display:flex;gap:12px;align-items:center;margin:4px 0 8px}
+.pi .cv{width:68px;height:68px}
+.pi h2{font-size:18px;font-weight:700;line-height:1.3}.pi small{color:var(--mute)}
+#vtabs{display:flex;gap:8px;margin:2px 0 6px;overflow-x:auto}
+#vtabs button{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--mute);white-space:nowrap}
+#vtabs button.on{background:var(--ac2);border-color:var(--ac2);color:#fff}
+#lyr{flex:1;overflow-y:auto;position:relative;padding:30% 4px;text-align:center;scrollbar-width:none;mask-image:linear-gradient(transparent,#000 14%,#000 86%,transparent)}
+#lyr::-webkit-scrollbar{display:none}
+.ly{font-size:19px;line-height:1.7;margin:2px 0;color:var(--mute);opacity:.55;transition:all .35s;cursor:pointer}
+.ly.on{color:var(--ink);opacity:1;font-size:22px;font-weight:700}
+.pl{font-size:18px;line-height:1.8;margin:2px 0}
+.hd{font-size:13px;color:var(--ac);margin:14px 0 2px;letter-spacing:.08em}
+.gap{height:14px}
+.nol{color:var(--mute);padding-top:20px}
+.ctl{padding-top:8px}
+#seek{width:100%;accent-color:var(--ac)}
+.tm{display:flex;justify-content:space-between;color:var(--mute);font-size:12px}
+.cb{display:flex;justify-content:space-around;align-items:center;margin-top:6px}
+.cb button{border:0;background:none;font-size:22px;padding:8px 12px}
+.cb .pbtn{width:60px;height:60px;font-size:22px;padding:0;background:var(--ac);color:#fff;border-radius:50%}
+.cb .sm{font-size:14px;color:var(--mute)}
+.modal{position:absolute;inset:0;background:rgba(20,30,45,.5);display:flex;align-items:flex-end;z-index:9}
+.mb{width:100%;max-height:92%;overflow-y:auto;background:var(--card);border-radius:20px 20px 0 0;padding:16px 16px 28px}
+.mb h3{margin-bottom:10px;font-size:18px}
+.mb label{display:block;font-size:13px;color:var(--mute);margin:12px 0 4px}
+.mb input[type=text],.mb textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:15px}
+.mb textarea{min-height:130px;line-height:1.6}
+.fv{border:1px dashed var(--line);border-radius:12px;padding:10px;margin-top:10px}
+.fv .vh{display:flex;gap:8px;margin-bottom:6px}.fv .vn{flex:1}
+.mb .acts{display:flex;gap:10px;margin-top:16px}.mb .acts .btn{flex:1;border-radius:12px;padding:13px}
+.help{font-size:12px;color:var(--mute);line-height:1.6;margin-top:4px}
+.dng{color:#c0392b;background:none;border:0;margin-top:12px;font-size:14px}
+#sync .mb{display:flex;flex-direction:column;gap:10px}
+#sl{height:34vh;overflow-y:auto;position:relative;text-align:center;font-family:"Noto Serif TC","Noto Serif KR",serif}
+#sl p{padding:4px 0;color:var(--mute);font-size:16px}#sl p.done{opacity:.4}#sl p.now{color:var(--ink);font-size:21px;font-weight:700}#sl p.hd{font-size:12px}
+.sr{display:flex;gap:8px}.sr button{flex:1;padding:11px;border-radius:12px;border:1px solid var(--line);background:var(--bg);font-size:14px}
+.tb,.tl{display:flex;align-items:center;gap:6px}
+.tl .ico{font-size:34px;line-height:1;padding:0 10px 4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ac{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;text-align:left}
+.ac .cv{width:100%;height:auto;aspect-ratio:1;border-radius:12px;font-size:34px}
+.ac b{display:block;margin-top:8px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac small{color:var(--mute);font-size:12px}
+.warn{color:var(--hi)}.pa{width:100%;margin-bottom:10px;border-radius:14px;padding:12px}
+@media (prefers-reduced-motion:reduce){#play,.ly{transition:none}}
+</style>
+</head>
+<body>
+<div id="app">
+<header class="top" id="top"></header>
+<div id="list"></div>
+<p class="empty" id="empty" hidden>還沒有歌。<br>按右上角「新增歌曲」，從手機選一個音檔，<br>再貼上歌詞，就可以一邊聽一邊看了。</p>
+<div id="mini" hidden><div class="cv sm" id="mcv">♪</div><b id="mt"></b><button class="pbtn" id="mplay">▶</button></div>
+
+<section id="play">
+<div class="ph"><button id="back">‹ 歌單</button><button id="ed">編輯</button></div>
+<div class="pi"><div class="cv" id="pcv">♪</div><div><h2 id="pt"></h2><small id="pa"></small></div></div>
+<div id="vtabs"></div>
+<div id="lyr"></div>
+<div class="ctl"><input type="range" id="seek" min="0" max="1" step="0.1" value="0"><div class="tm"><span id="t1">0:00</span><span id="t2">0:00</span></div>
+<div class="cb"><button class="sm" id="loop">循環</button><button id="prev" aria-label="上一首">⏮</button><button class="pbtn" id="pp" aria-label="播放">▶</button><button id="next" aria-label="下一首">⏭</button><button class="sm" id="syncbtn">對時間</button></div></div>
+</section>
+
+<div class="modal" id="form" hidden><div class="mb">
+<h3 class="serif" id="ftitle">新增歌曲</h3>
+<label>標題</label><input type="text" id="f-title" maxlength="60">
+<label>歌手或備註（選填）</label><input type="text" id="f-artist" maxlength="60">
+<label>專輯（選填，同一張專輯的歌會放在一起）</label><input type="text" id="f-album" list="albums" maxlength="40"><datalist id="albums"></datalist>
+<label id="f-al">音檔（必選）</label><input type="file" id="f-audio" accept="audio/*">
+<label>封面圖（選填）</label><input type="file" id="f-cover" accept="image/*">
+<label>歌詞</label>
+<div id="f-vers"></div>
+<button class="btn ghost" id="f-addv" style="margin-top:10px;width:100%;border-radius:12px">＋ 再加一個版本（例如中文、English）</button>
+<p class="help">可以貼一般歌詞，也可以貼有時間標記的歌詞，例如 [00:12.50]第一句。沒有時間標記的話，存好之後按播放頁的「對時間」，邊聽邊點，就會變成同步歌詞。</p>
+<div class="acts"><button class="btn ghost" id="f-cancel">取消</button><button class="btn" id="f-save">儲存</button></div>
+<button class="dng" id="f-del" hidden>刪除這首歌</button>
+</div></div>
+
+<div class="modal" id="menu" hidden><div class="mb"><h3 class="serif">備份與還原</h3><p class="help">備份只存歌名、專輯、歌詞和封面，不含音檔（音檔太大，請自己保留原檔）。換手機或不小心清掉網站資料後，按「還原」，歌詞就回來，再替每首歌補選一次音檔就好。</p><div class="acts" style="flex-direction:column"><button class="btn" id="m-bk">備份歌詞</button><button class="btn ghost" id="m-rs">還原歌詞（選備份檔）</button><button class="btn ghost" id="m-x">關閉</button></div></div></div>
+<input type="file" id="imp" accept=".json,application/json" hidden>
+<div class="modal" id="sync" hidden><div class="mb">
+<h3 class="serif">對時間</h3>
+<p class="help" style="margin:0">播放時，每一句歌詞開始唱的瞬間，點一下下面的大按鈕。點錯了可以按「上一句」。</p>
+<div id="sl"></div>
+<div class="sr"><button id="s-play">播放／暫停</button><button id="s-back">‹ 5 秒</button><button id="s-undo">上一句</button></div>
+<button class="btn big" id="s-tap">這一句開始 ▸</button>
+<div class="sr"><button id="s-cancel">取消</button><button id="s-done" hidden>完成並儲存</button></div>
+</div></div>
+</div>
+<audio id="au" preload="auto"></audio>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=s=>{s=Math.max(0,s|0);return (s/60|0)+':'+String(s%60).padStart(2,'0')};
+const DB=new Promise((res,rej)=>{const r=indexedDB.open('lpcm',1);r.onupgradeneeded=()=>{r.result.createObjectStore('meta',{keyPath:'id'});r.result.createObjectStore('audio',{keyPath:'id'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+const dbx=async(name,mode,f)=>{const db=await DB;return new Promise((res,rej)=>{const t=db.transaction(name,mode);const q=f(t.objectStore(name));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error);t.onabort=()=>rej(t.error)})};
+const getAll=()=>dbx('meta','readonly',s=>s.getAll());
+const put=(n,o)=>dbx(n,'readwrite',s=>s.put(o));
+const del=(n,id)=>dbx(n,'readwrite',s=>s.delete(id));
+const getOne=(n,id)=>dbx(n,'readonly',s=>s.get(id));
+const UN='未分類',ALL='__all';
+let songs=[],cur=-1,curId=null,QIDS=[],ver=0,lines=[],active=-1,loop='all',curUrl='',urls={},editId=null,newCover=null,SY=null,view='albums',alb=null,USED='';
+const au=$('#au');
+const lsGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const albName=s=>s.album||UN;
+const cover=s=>s.cover?(urls[s.id]||(urls[s.id]=URL.createObjectURL(s.cover))):'';
+const setCv=(el,s)=>{if(s&&s.cover){el.style.backgroundImage=`url(${cover(s)})`;el.textContent=''}else{el.style.backgroundImage='';el.textContent='♪'}};
+const bkInfo=()=>{const t=+lsGet('lpcm-bk');if(!t)return '尚未備份';const d=Math.floor((Date.now()-t)/864e5);return d<1?'今天已備份':d+' 天前備份'};
+const listSongs=()=>alb===ALL?songs:songs.filter(s=>albName(s)===alb);
+function albumsList(){const m=new Map();songs.forEach(s=>{const n=albName(s);if(!m.has(n))m.set(n,[]);m.get(n).push(s)});return [...m]}
+function info(){if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(x=>{USED=Math.round(x.usage/1048576)+' MB';renderTop()}).catch(()=>{})}
+async function load(){
+songs=(await getAll()).sort((a,b)=>a.created-b.created);
+cur=curId?songs.findIndex(s=>s.id===curId):-1;if(cur<0)curId=null;
+if(view==='album'&&alb!==ALL&&!songs.some(s=>albName(s)===alb))view='albums';
+renderTop();renderList();info()}
+function renderTop(){
+if(view==='albums'){$('#top').innerHTML=`<div><h1 class="serif">Costa Music</h1><small>已用 ${USED||'…'}・${bkInfo()}・v4</small></div><div class="tb"><button class="ico" data-menu aria-label="備份與還原">⋯</button><button class="btn" data-add>＋ 新增歌曲</button></div>`}
+else{$('#top').innerHTML=`<div class="tl"><button class="ico" data-home aria-label="返回">‹</button><div><h1 class="serif">${esc(alb===ALL?'全部歌曲':alb)}</h1><small>${listSongs().length} 首</small></div></div><div class="tb"><button class="btn" data-add>＋ 新增歌曲</button></div>`}}
+function renderList(){
+$('#empty').hidden=songs.length>0||view!=='albums';
+if(view==='albums'){
+$('#list').innerHTML=songs.length?`<div class="grid">${[['全部歌曲',songs,ALL]].concat(albumsList().map(([n,L])=>[n,L,n])).map(([n,L,k])=>{const c=L.find(s=>s.cover);return `<button class="ac" data-album="${esc(k)}"><div class="cv" ${c?`style="background-image:url(${cover(c)})"`:''}>${c?'':'♪'}</div><b>${esc(n)}</b><small>${L.length} 首</small></button>`}).join('')}</div>`:''}
+else{const L=listSongs();
+$('#list').innerHTML=(L.length?`<button class="btn pa" data-playall>▶ 播放全部</button>`:'')+L.map(s=>`<div class="row${s.id===curId?' on':''}" data-id="${s.id}"><div class="cv sm" ${s.cover?`style="background-image:url(${cover(s)})"`:''}>${s.cover?'':'♪'}</div><div class="rt"><b>${esc(s.title)}</b><small>${esc(s.artist||'')}${s.artist&&s.dur?' · ':''}${s.dur?fmt(s.dur):''}${s.noaudio?' <span class="warn">⚠ 沒有音檔</span>':''}</small></div><button class="ico" data-edit="${s.id}" aria-label="編輯">⋯</button></div>`).join('')}
+$('#mini').hidden=cur<0;
+if(cur>=0){$('#mt').textContent=songs[cur].title;setCv($('#mcv'),songs[cur])}}
+
+async function playSong(id,open){
+const i=songs.findIndex(s=>s.id===id),s=songs[i];if(!s)return;
+const rec=await getOne('audio',s.id);
+if(!rec){alert('這首歌還沒有音檔。請按那首歌右邊的「⋯」，選擇音檔。');return}
+cur=i;curId=id;ver=0;
+if(!QIDS.includes(id))QIDS=songs.map(x=>x.id);
+if(curUrl)URL.revokeObjectURL(curUrl);
+curUrl=URL.createObjectURL(rec.blob);au.src=curUrl;
+$('#pt').textContent=s.title;$('#pa').textContent=s.artist||'';setCv($('#pcv'),s);
+renderLyr();renderList();
+try{await au.play()}catch(e){}
+media();if(open)$('#play').classList.add('on')}
+
+function parseLyr(text){
+const out=[];let synced=false;const RE=/\[(\d+):(\d+(?:\.\d+)?)\]/g;
+for(const raw of String(text).split(/\r?\n/)){
+const m=[...raw.matchAll(RE)],body=raw.replace(RE,'').trim();
+if(m.length){synced=true;m.forEach(x=>out.push({t:+x[1]*60+parseFloat(x[2]),x:body}))}else out.push({t:null,x:raw.trim()})}
+return synced?{synced:true,L:out.filter(o=>o.t!=null).sort((a,b)=>a.t-b.t)}:{synced:false,L:out}}
+const isHead=x=>/^\[.+\]$/.test(x);
+function renderLyr(){
+const s=songs[cur];if(!s)return;
+const v=s.versions[ver];
+$('#vtabs').innerHTML=s.versions.length>1?s.versions.map((x,i)=>`<button class="${i===ver?'on':''}" data-v="${i}">${esc(x.name||'歌詞')}</button>`).join(''):'';
+const has=v&&(v.text||'').trim(),P=has?parseLyr(v.text):{synced:false,L:[]};
+lines=P.synced?P.L:[];active=-1;
+$('#lyr').innerHTML=!has?'<p class="nol">還沒有歌詞。按右上角「編輯」貼上。</p>':P.synced?P.L.map((l,i)=>`<p class="ly" data-t="${l.t}" id="l${i}">${esc(l.x)||'&nbsp;'}</p>`).join(''):P.L.map(l=>l.x?`<p class="${isHead(l.x)?'hd':'pl'}">${esc(l.x)}</p>`:'<p class="gap"></p>').join('');
+$('#lyr').scrollTop=0;
+$('#syncbtn').hidden=!has}
+function tick(){
+$('#seek').value=au.currentTime;$('#t1').textContent=fmt(au.currentTime);
+if(!lines.length)return;
+const t=au.currentTime+0.15;let i=-1;
+for(let k=0;k<lines.length;k++){if(lines[k].t<=t)i=k;else break}
+if(i!==active){active=i;$$('#lyr .ly.on').forEach(e=>e.classList.remove('on'));const e=$('#l'+i);if(e){e.classList.add('on');const b=$('#lyr');b.scrollTo({top:e.offsetTop-b.clientHeight/2+e.clientHeight/2,behavior:'smooth'})}}}
+setInterval(()=>{if(!au.paused||SY)tick()},200);
+au.addEventListener('timeupdate',()=>{$('#seek').value=au.currentTime;$('#t1').textContent=fmt(au.currentTime)});
+au.addEventListener('loadedmetadata',()=>{$('#seek').max=au.duration||1;$('#t2').textContent=fmt(au.duration||0)});
+const ico=()=>{const p=au.paused;$('#pp').textContent=p?'▶':'❚❚';$('#mplay').textContent=p?'▶':'❚❚';if('mediaSession'in navigator)navigator.mediaSession.playbackState=p?'paused':'playing'};
+au.addEventListener('play',ico);au.addEventListener('pause',ico);
+au.addEventListener('ended',()=>{if(loop==='one'){au.currentTime=0;au.play()}else step(1)});
+function step(d){const Q=QIDS.filter(id=>songs.some(s=>s.id===id));if(!Q.length)return;if(Q.length===1&&loop!=='one'&&d>0){au.pause();return}playSong(Q[(Q.indexOf(curId)+d+Q.length)%Q.length],false)}
+function media(){
+if(!('mediaSession'in navigator)||cur<0)return;const s=songs[cur];
+try{navigator.mediaSession.metadata=new MediaMetadata({title:s.title,artist:s.artist||'La Piccola Costa',album:'Costa Music'})}catch(e){}
+const h=(a,f)=>{try{navigator.mediaSession.setActionHandler(a,f)}catch(e){}};
+h('play',()=>au.play());h('pause',()=>au.pause());h('previoustrack',()=>step(-1));h('nexttrack',()=>step(1));
+h('seekto',d=>{au.currentTime=d.seekTime})}
+
+/* form */
+function verRow(v){const d=document.createElement('div');d.className='fv';d.innerHTML=`<div class="vh"><input type="text" class="vn" placeholder="版本名稱，例如：한국어" maxlength="20"><button class="ico" type="button" data-rmv aria-label="移除">✕</button></div><textarea class="vt" placeholder="貼上歌詞"></textarea>`;d.querySelector('.vn').value=v.name||'';d.querySelector('.vt').value=v.text||'';return d}
+function openForm(s){
+editId=s?s.id:null;newCover=null;dropCover=false;
+$('#ftitle').textContent=s?'編輯歌曲':'新增歌曲';
+$('#f-title').value=s?s.title:'';$('#f-artist').value=s?s.artist||'':'';$('#f-album').value=s?s.album||'':(view==='album'&&alb!==ALL&&alb!==UN?alb:'');$('#albums').innerHTML=albumsList().filter(x=>x[0]!==UN).map(x=>`<option value="${esc(x[0])}">`).join('');
+$('#f-audio').value='';$('#f-cover').value='';
+$('#f-al').textContent=s?'換一個音檔（不換就留空）':'音檔（必選）';
+const box=$('#f-vers');box.innerHTML='';
+(s&&s.versions.length?s.versions:[{name:'',text:''}]).forEach(v=>box.appendChild(verRow(v)));
+$('#f-del').hidden=!s;$('#form').hidden=false}
+function shrink(file){return new Promise(res=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,600/Math.max(img.width,img.height)),c=document.createElement('canvas');c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);c.toBlob(b=>{URL.revokeObjectURL(u);res(b)},'image/jpeg',.82)};img.onerror=()=>res(null);img.src=u})}
+function duration(file){return new Promise(res=>{const a=new Audio(),u=URL.createObjectURL(file);a.preload='metadata';a.onloadedmetadata=()=>{URL.revokeObjectURL(u);res(a.duration||0)};a.onerror=()=>res(0);a.src=u})}
+$('#f-cover').addEventListener('change',async e=>{const f=e.target.files[0];newCover=f?await shrink(f):null});
+$('#f-save').addEventListener('click',async()=>{
+const f=$('#f-audio').files[0];
+if(!editId&&!f){alert('請先選一個音檔');return}
+let s=editId?songs.find(x=>x.id===editId):{id:'s'+Date.now(),created:Date.now()};
+s.title=$('#f-title').value.trim()||(f?f.name.replace(/\.[^.]+$/,''):'未命名');
+s.artist=$('#f-artist').value.trim();s.album=$('#f-album').value.trim();
+s.versions=$$('#f-vers .fv').map(el=>({name:el.querySelector('.vn').value.trim()||'歌詞',text:el.querySelector('.vt').value})).filter(v=>v.text.trim());
+if(newCover){s.cover=newCover;delete urls[s.id]}
+if(f){s.dur=await duration(f);delete s.noaudio;await put('audio',{id:s.id,blob:f})}
+await put('meta',s);
+if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
+$('#form').hidden=true;
+const playing=curId===s.id;
+await load();
+if(playing){if(f)playSong(s.id,true);else{const s2=songs[cur];$('#pt').textContent=s2.title;$('#pa').textContent=s2.artist||'';setCv($('#pcv'),s2);renderLyr();renderList()}}});
+$('#f-cancel').addEventListener('click',()=>$('#form').hidden=true);
+$('#f-del').addEventListener('click',async()=>{
+if(!confirm('要刪除這首歌嗎？音檔和歌詞都會一起刪除。'))return;
+const id=editId;if(curId===id){au.pause();au.removeAttribute('src');$('#play').classList.remove('on');cur=-1;curId=null}
+await del('meta',id);await del('audio',id);$('#form').hidden=true;load()});
+$('#f-addv').addEventListener('click',()=>$('#f-vers').appendChild(verRow({})));
+$('#f-vers').addEventListener('click',e=>{if(e.target.closest('[data-rmv]')){const all=$$('#f-vers .fv');if(all.length>1)e.target.closest('.fv').remove();else all[0].querySelectorAll('input,textarea').forEach(x=>x.value='')}});
+
+/* sync tool */
+function openSync(){
+const v=songs[cur].versions[ver],P=parseLyr(v.text);
+const src=P.synced?P.L.map(l=>l.x).filter(Boolean):v.text.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+SY={L:src.map(x=>({x,head:isHead(x)})),st:[],i:0};skipHeads();
+au.currentTime=0;au.play().catch(()=>{});renderSync();$('#sync').hidden=false}
+function skipHeads(){while(SY.i<SY.L.length&&SY.L[SY.i].head){SY.st[SY.i]=null;SY.i++}}
+function renderSync(){
+$('#sl').innerHTML=SY.L.map((l,i)=>`<p id="y${i}" class="${l.head?'hd ':''}${i<SY.i?'done':i===SY.i?'now':''}">${esc(l.x)}</p>`).join('');
+const e=$('#y'+Math.min(SY.i,SY.L.length-1)),b=$('#sl');if(e)b.scrollTo({top:e.offsetTop-b.clientHeight/2+e.clientHeight/2,behavior:'smooth'});
+$('#s-done').hidden=SY.i<SY.L.length;$('#s-tap').hidden=SY.i>=SY.L.length}
+const lrcT=t=>{t=Math.max(0,t);const m=Math.floor(t/60),s=(t%60).toFixed(2).padStart(5,'0');return `[${String(m).padStart(2,'0')}:${s}]`};
+$('#s-tap').addEventListener('click',()=>{if(SY.i>=SY.L.length)return;SY.st[SY.i]=Math.max(0,au.currentTime-0.25);SY.i++;skipHeads();renderSync()});
+$('#s-undo').addEventListener('click',()=>{if(SY.i<=0)return;do{SY.i--}while(SY.i>0&&SY.L[SY.i].head);SY.st.length=SY.i;renderSync()});
+$('#s-back').addEventListener('click',()=>{au.currentTime=Math.max(0,au.currentTime-5)});
+$('#s-play').addEventListener('click',()=>{au.paused?au.play():au.pause()});
+$('#s-cancel').addEventListener('click',()=>{SY=null;$('#sync').hidden=true});
+$('#s-done').addEventListener('click',async()=>{
+const out=[];
+SY.L.forEach((l,k)=>{let j=k;while(j<SY.L.length&&SY.L[j].head)j++;const t=SY.st[j];if(t!=null)out.push(lrcT(t)+l.x)});
+songs[cur].versions[ver].text=out.join('\n');
+await put('meta',songs[cur]);SY=null;$('#sync').hidden=true;renderLyr()});
+
+/* events */
+$('#top').addEventListener('click',e=>{
+if(e.target.closest('[data-add]'))openForm(null);
+else if(e.target.closest('[data-home]')){view='albums';alb=null;renderTop();renderList()}
+else if(e.target.closest('[data-menu]'))$('#menu').hidden=false});
+$('#list').addEventListener('click',e=>{
+const a=e.target.closest('[data-album]');if(a){view='album';alb=a.dataset.album;renderTop();renderList();$('#list').scrollTop=0;return}
+if(e.target.closest('[data-playall]')){QIDS=listSongs().map(s=>s.id);playSong(QIDS[0],true);return}
+const ed=e.target.closest('[data-edit]');if(ed){openForm(songs.find(s=>s.id===ed.dataset.edit));return}
+const r=e.target.closest('.row');if(r){QIDS=listSongs().map(s=>s.id);playSong(r.dataset.id,true)}});
+/* backup */
+const b2d=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)});
+async function backup(){
+if(!songs.length){alert('還沒有歌可以備份');return}
+const data=await Promise.all(songs.map(async s=>({id:s.id,title:s.title,artist:s.artist||'',album:s.album||'',created:s.created,dur:s.dur||0,versions:s.versions||[],cover:s.cover?await b2d(s.cover):null})));
+const blob=new Blob([JSON.stringify({app:'costa-music',v:1,songs:data})],{type:'application/json'});
+const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='costa-music-backup-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();
+setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+try{localStorage.setItem('lpcm-bk',Date.now())}catch(e){}
+$('#menu').hidden=true;renderTop();
+alert('備份檔已下載，請到手機的「下載」資料夾找 costa-music-backup 開頭的檔案。建議再傳一份到雲端或傳給自己。')}
+async function restore(file){
+let j;try{j=JSON.parse(await file.text())}catch(e){alert('這不是有效的備份檔');return}
+if(!j||j.app!=='costa-music'||!Array.isArray(j.songs)){alert('這不是 Costa Music 的備份檔');return}
+if(!confirm(`備份裡有 ${j.songs.length} 首歌。同一首歌的歌詞會被備份內容取代；原本沒有的歌會新增，需要再選一次音檔。繼續嗎？`))return;
+let add=0,upd=0;
+for(const x of j.songs){const ex=songs.find(s=>s.id===x.id),s=ex||{id:x.id,created:x.created||Date.now(),noaudio:true};
+s.title=x.title||'未命名';s.artist=x.artist||'';s.album=x.album||'';s.versions=x.versions||[];if(x.dur)s.dur=x.dur;
+if(x.cover){s.cover=await (await fetch(x.cover)).blob();delete urls[s.id]}
+await put('meta',s);ex?upd++:add++}
+$('#menu').hidden=true;await load();
+alert(`還原完成：新增 ${add} 首，更新 ${upd} 首。`+(add?'新增的歌需要補選音檔：按那首歌右邊的「⋯」→ 選擇音檔 → 儲存。':''))}
+$('#m-bk').addEventListener('click',backup);
+$('#m-rs').addEventListener('click',()=>$('#imp').click());
+$('#imp').addEventListener('change',e=>{const f=e.target.files[0];e.target.value='';if(f)restore(f)});
+$('#m-x').addEventListener('click',()=>$('#menu').hidden=true);
+$('#mini').addEventListener('click',e=>{if(e.target.closest('#mplay'))return;$('#play').classList.add('on')});
+$('#mplay').addEventListener('click',()=>au.paused?au.play():au.pause());
+$('#back').addEventListener('click',()=>$('#play').classList.remove('on'));
+$('#ed').addEventListener('click',()=>openForm(songs[cur]));
+$('#pp').addEventListener('click',()=>au.paused?au.play():au.pause());
+$('#prev').addEventListener('click',()=>{if(au.currentTime>3)au.currentTime=0;else step(-1)});
+$('#next').addEventListener('click',()=>step(1));
+$('#loop').addEventListener('click',()=>{loop=loop==='all'?'one':'all';$('#loop').textContent=loop==='all'?'循環':'單曲'});
+$('#seek').addEventListener('input',e=>{au.currentTime=+e.target.value});
+$('#vtabs').addEventListener('click',e=>{const b=e.target.closest('[data-v]');if(b){ver=+b.dataset.v;renderLyr()}});
+$('#lyr').addEventListener('click',e=>{const p=e.target.closest('.ly');if(p){au.currentTime=+p.dataset.t;au.play()}});
+$('#syncbtn').addEventListener('click',()=>{if(songs[cur])openSync()});
+load();
+if('serviceWorker' in navigator){const had=!!navigator.serviceWorker.controller;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!window.__rl){window.__rl=1;location.reload()}});window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(r=>r.update()).catch(()=>{}))}
+</script>
+</body>
+</html>
